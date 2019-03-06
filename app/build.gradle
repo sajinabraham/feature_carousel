@@ -1,0 +1,63 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
+apply from: "$rootDir/githooks.gradle"
+
+android {
+    compileSdkVersion 33
+    defaultConfig {
+        applicationId "biz.filmeroo.premier"
+        minSdkVersion 23
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0"
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    def retrofit_version = '2.9.0'
+
+    // Core
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // Support
+    implementation 'androidx.annotation:annotation:1.5.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation "androidx.activity:activity-ktx:1.6.0"
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+
+    // Architecture
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+
+    // Misc
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'jp.wasabeef:picasso-transformations:2.4.0'
+    implementation 'com.google.code.gson:gson:2.9.1'
+
+    // Dagger Hilt
+    implementation("com.google.dagger:hilt-android:$hilt_version")
+    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
+
+    // Test
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-inline:4.8.0'
+    testImplementation 'com.nhaarman:mockito-kotlin:1.6.0'
+    testImplementation 'com.squareup.assertj:assertj-android:1.2.0'
+    testImplementation 'androidx.annotation:annotation:1.5.0'
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+}
