@@ -7,12 +7,10 @@ import javax.inject.Inject
 
 internal class FilmRepository @Inject constructor(private val filmService: FilmService) {
 
-    fun fetchTopRated(): Single<List<ApiFilm>> {
-        return filmService.topRated()
-            .map { it.results }
-    }
+    fun fetchTopRated(): Single<List<ApiFilm>> = filmService.topRated()
+        .map { it.results }
 
-    fun fetchMovie(id: Long): Single<ApiFilm> {
-        return filmService.movie(id)
-    }
+    fun fetchMovie(id: Long): Single<ApiFilm> = filmService.movie(id)
+
+    fun fetchPopular(): Single<List<ApiFilm>> = filmService.popular().map { it.results }
 }

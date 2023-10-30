@@ -20,27 +20,27 @@ class MainActivity : AppCompatActivity() {
     @Inject
     internal lateinit var adapter: FilmAdapter
 
-    private lateinit var binding: ActivityMainBinding
-
     private val filmViewModel by viewModels<FilmViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setupView()
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setupView(binding)
         filmViewModel.filmState.observe(this, ::updateState)
     }
 
-    private fun setupView() {
-        setContentView(binding.root)
-        val linearLayoutManager = LinearLayoutManager(this)
-        binding.recycler.layoutManager = linearLayoutManager
-        binding.recycler.adapter = adapter
-        val dividerItemDecoration = DividerItemDecoration(this, linearLayoutManager.orientation).apply {
-            setDrawable(AppCompatResources.getDrawable(this@MainActivity, R.drawable.divider)!!)
+    private fun setupView(binding: ActivityMainBinding) {
+        binding.apply {
+            setContentView(root)
+            val linearLayoutManager = LinearLayoutManager(this@MainActivity)
+            recycler.layoutManager = linearLayoutManager
+            recycler.adapter = adapter
+            val dividerItemDecoration = DividerItemDecoration(this@MainActivity, linearLayoutManager.orientation).apply {
+                setDrawable(AppCompatResources.getDrawable(this@MainActivity, R.drawable.divider)!!)
+            }
+            recycler.addItemDecoration(dividerItemDecoration)
+            adapter.setOnClick { id -> FilmDetailActivity.start(this@MainActivity, id) }
         }
-        binding.recycler.addItemDecoration(dividerItemDecoration)
-        adapter.setOnClick { id -> FilmDetailActivity.start(this, id) }
     }
 
     private fun updateState(filmState: FilmViewModel.FilmState) {

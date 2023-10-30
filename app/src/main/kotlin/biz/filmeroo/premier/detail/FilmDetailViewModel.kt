@@ -19,9 +19,13 @@ internal class FilmDetailViewModel @Inject constructor(
 
     private val filmId: Long = savedStateHandle.get<Long>(FILM_ID)!!
     private val _filmDetailState = MutableLiveData<FilmDetailState>()
+    private val _filmPopularState = MutableLiveData<FilmPopularState>()
 
     val filmDetailState: LiveData<FilmDetailState>
         get() = _filmDetailState
+
+    val filmPopularState: LiveData<FilmPopularState>
+        get() = _filmPopularState
 
     init {
         addSubscription(
@@ -33,6 +37,16 @@ internal class FilmDetailViewModel @Inject constructor(
                     { _filmDetailState.value = FilmDetailState.Error }
                 )
         )
+
+        addSubscription(
+            filmRepository.fetchPopular()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { _filmPopularState.value = FilmPopularState.Success(it) },
+                    { _filmPopularState.value = FilmPopularState.Error }
+                )
+        )
     }
 
     internal companion object {
@@ -42,5 +56,10 @@ internal class FilmDetailViewModel @Inject constructor(
     sealed interface FilmDetailState {
         data class Success(val film: ApiFilm) : FilmDetailState
         object Error : FilmDetailState
+    }
+
+    sealed interface FilmPopularState {
+        data class Success(val films: List<ApiFilm>) : FilmPopularState
+        object Error : FilmPopularState
     }
 }

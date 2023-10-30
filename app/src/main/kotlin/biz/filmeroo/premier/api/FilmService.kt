@@ -12,6 +12,9 @@ interface FilmService {
     @GET("movie/{movie_id}")
     fun movie(@Path("movie_id") movieId: Long): Single<ApiFilm>
 
+    @GET("movie/top_rated")
+    fun popular(): Single<ApiFilmListResponse>
+
     companion object {
         const val BASE_URL = "https://api.themoviedb.org/3/"
         const val API_KEY_PARAM = "api_key"
