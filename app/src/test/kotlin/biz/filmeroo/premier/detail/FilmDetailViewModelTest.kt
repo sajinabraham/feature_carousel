@@ -6,6 +6,7 @@ import biz.filmeroo.premier.api.ApiFilm
 import biz.filmeroo.premier.detail.FilmDetailViewModel.Companion.FILM_ID
 import biz.filmeroo.premier.detail.FilmDetailViewModel.FilmDetailState
 import biz.filmeroo.premier.main.FilmRepository
+import biz.filmeroo.premier.support.Fixtures
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Single
@@ -35,11 +36,13 @@ class FilmDetailViewModelTest {
     }
 
     @Test
-    fun `on success show film details`() {
+    fun on_success_show_film_details() {
+        val results = Fixtures.filmList()
         val film = mock<ApiFilm>()
         val filmId = 2L
         whenever(savedStateHandle.get<Long>(FILM_ID)).thenReturn(filmId)
         whenever(repository.fetchMovie(filmId)).thenReturn(Single.just(film))
+        whenever(repository.fetchPopular()).thenReturn(Single.just(results))
 
         viewModel = FilmDetailViewModel(savedStateHandle, repository)
 

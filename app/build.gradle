@@ -5,11 +5,11 @@ apply plugin: 'dagger.hilt.android.plugin'
 apply from: "$rootDir/githooks.gradle"
 
 android {
-    compileSdkVersion 33
+    compileSdk 34
     defaultConfig {
         applicationId "biz.filmeroo.premier"
-        minSdkVersion 23
-        targetSdkVersion 33
+        minSdk = 24
+        targetSdk = 34
         versionCode 1
         versionName "1.0"
     }
@@ -19,9 +19,18 @@ android {
         test.java.srcDirs += 'src/test/kotlin'
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
     buildFeatures {
         viewBinding true
     }
+    namespace 'biz.filmeroo.premier'
 }
 
 dependencies {
@@ -31,10 +40,10 @@ dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     // Support
-    implementation 'androidx.annotation:annotation:1.5.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation "androidx.activity:activity-ktx:1.6.0"
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.annotation:annotation:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation "androidx.activity:activity-ktx:1.8.0"
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
 
     // Architecture
@@ -53,11 +62,15 @@ dependencies {
     implementation("com.google.dagger:hilt-android:$hilt_version")
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
 
+    //Navigation Graph
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.4'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.7.4'
+
     // Test
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito:mockito-inline:4.8.0'
     testImplementation 'com.nhaarman:mockito-kotlin:1.6.0'
     testImplementation 'com.squareup.assertj:assertj-android:1.2.0'
-    testImplementation 'androidx.annotation:annotation:1.5.0'
-    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation 'androidx.annotation:annotation:1.7.0'
+    testImplementation "androidx.arch.core:core-testing:2.2.0"
 }
